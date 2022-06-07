@@ -28,4 +28,4 @@ Clone the repository and install any dependencies with NPM
 Design a frontend to display the JSON data the robust API outputs and make your own social network.
 
 ## Demonstration
-Here is a [Video Walkthrough]()
+Here is a [Video Walkthrough](https://drive.google.com/file/d/1BZCONF5vmQHLmukJwFCJGgCrEsv_BeIz/view)
