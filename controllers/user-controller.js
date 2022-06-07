@@ -75,24 +75,19 @@ const userController = {
   },
   // delete user
   deleteUser({ params }, res ) {
-    // Thought.findOneAndDelete({ user: { _id: params.id }})
-    User.findOne({ _id: params.id })
+    User.findOneAndDelete({ _id: params.id })
     .then(dbUserData => {
       if (!dbUserData) {
         res.status(404).json({ message: 'No user found with this id!' });
         return;
       }
       console.log(dbUserData.thoughts);
-      let userThoughtArr;
-      if (dbUserData.thoughts) {
-        dbUserData.thoughts.forEach(userThought => {
-          temp = userThought.toString().replace(/ObjectId\("(.*)"\)/, "$1");
-          userThoughtArr = Array.prototype.push(temp.value);
-          // Thought.findOneAndDelete({ _id: temp })
-        })
-        // Thought.deleteMany({ _id: userThought });
-        // Thought.deleteMany({ _id: userThoughtArr })
-      }
+      Thought.remove({ _id: dbUserData.thoughts })
+      .then(dbThoughtData => {
+        if (dbThoughtData) {
+          console.log(dbThoughtData);
+        }
+      })
       res.json(dbUserData);
     })
     .catch(err => {
