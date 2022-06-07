@@ -14,8 +14,9 @@ const ReactionSchema = new Schema(
             required: true,
             trim: true
         },
-        username: {
-            type: String,
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
             required: true
         },
         createdAt: {
@@ -33,6 +34,7 @@ const ReactionSchema = new Schema(
 
 const ThoughtSchema = new Schema(
     {
+        // set custom id to avoid confusion with parent user  _id
         thoughtText: {
             type: String,
             maxLength: 280,
@@ -44,21 +46,37 @@ const ThoughtSchema = new Schema(
             default: Date.now,
             get: createdAtVal => dateFormat(createdAtVal)
         },
-        username: {
-            type: String,
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
             required: true
         },
         reactions: [ReactionSchema]
     },
     {
         toJSON: {
-            getters: true
+            getters: true,
+            virtuals: true
         },
     }
 );
 
 ThoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
+});
+
+ReactionSchema.virtual('username', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
+});
+
+ThoughtSchema.virtual('username', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
 });
 
 const Thought = model('Thought', ThoughtSchema);
