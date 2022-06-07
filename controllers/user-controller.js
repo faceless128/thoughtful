@@ -4,9 +4,15 @@ const userController = {
   // get all users
   getAllUsers(req, res) {
     User.find({})
-    .populate({
+    .populate(
+      {
       path: 'thoughts',
       select: '-__v'
+    })
+    .populate(
+      {
+      path: 'friends',
+      select: 'username'
     })
     .select('-__v')
     .sort({ _id: -1 })
@@ -23,7 +29,12 @@ const userController = {
       path: 'thoughts',
       select: '-__v'
   })
-  .select('-__v')
+  .populate(
+    {
+    path: 'friends',
+    select: '-__v'
+  })
+.select('-__v')
   .then(dbUserData => {
       // If no user is found, send 404
       if (!dbUserData) {
@@ -49,6 +60,7 @@ const userController = {
   // update user
   updateUser({ params, body }, res ) {
     User.findOneAndUpdate({ _id: params.id}, body, {new: true, runValidators: true })
+    .select('-__v')
     .then(dbUserData => {
       if (!dbUserData) {
         res.status(404).json({ message: 'No user found with this id!' });
@@ -99,7 +111,7 @@ const userController = {
   deleteFriend({ params }, res ) {
     User.findOneAndUpdate(
       { _id: params.userId },
-      { $pull: { friends: { friendId: params.friendId } } },
+      { $pull: { friends: params.friendId } },
       { new: true }
     )
     .then(dbPizzaData => res.json(dbPizzaData))
