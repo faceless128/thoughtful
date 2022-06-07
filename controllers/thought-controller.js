@@ -8,6 +8,13 @@ const thoughtController = {
       path: 'user',
       select: 'username'
     })
+    .populate({
+      path: 'reactions',
+      populate: {
+        path: 'userId',
+        select: 'username'
+      }
+    })
     .select('-__v')
     .sort({ _id: -1 })
       .then(dbThoughtData => res.json(dbThoughtData))
@@ -47,7 +54,14 @@ const thoughtController = {
       path: 'user',
       select: 'username'
     })
-    .select('-__v')
+    .populate({
+        path: 'reactions',
+        populate: {
+          path: 'userId',
+          select: 'username'
+        }
+      })
+      .select('-__v')
     .then(dbThoughtData => {
       // If no thought is found, send 404
       if (!dbThoughtData) {

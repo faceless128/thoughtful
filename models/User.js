@@ -43,6 +43,11 @@ const UserSchema = new Schema(
     }
 )
 
+UserSchema.post("remove", async function(res, next) { 
+    await Thought.deleteMany({ userId: this._id });
+    next();
+});
+
 // get total count of comments and replies on retrieval
 
 UserSchema.virtual('friendCount').get(function() {
