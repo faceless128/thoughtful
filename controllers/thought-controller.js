@@ -5,7 +5,7 @@ const thoughtController = {
   getAllThoughts(req, res) {
     Thought.find({})
     .populate({
-      path: 'username',
+      path: 'user',
       select: 'username'
     })
     .select('-__v')
@@ -18,12 +18,23 @@ const thoughtController = {
   },
   // create a thought
   createThought({ body }, res ) {
-    Comment.findOneAndUpdate(
-      { _id: body.userId },
-      { $push: { thoughts: body } },
-      { new: true, runValidators: true  }
-    )
-    .then(dbThoughtData => res.json(dbThoughtData))
+    Thought.create(body)
+    .then(dbThoughtData => {
+      if (!dbThoughtData) {
+        res.status(404).json({ message: 'Error when posting thought!' });
+          return;
+        }
+      console.log(dbThoughtData);
+      User.findOneAndUpdate(
+        { _id: dbThoughtData.userId },
+        { $push: { thoughts: dbThoughtData._id } },
+        { new: true }
+      )
+      .then(dbUserData => {
+        res.json(dbUserData)
+      })
+    //   res.json(dbThoughtData);
+    })
     .catch(err => {
       console.log(err);
       res.status(400).json(err);
@@ -33,7 +44,7 @@ const thoughtController = {
   getThoughtById({ params }, res ) {
     Thought.findOne({ _id: params.id })
     .populate({
-      path: 'username',
+      path: 'user',
       select: 'username'
     })
     .select('-__v')

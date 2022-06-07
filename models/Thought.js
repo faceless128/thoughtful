@@ -65,14 +65,14 @@ ThoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });
 
-ReactionSchema.virtual('username', {
+ReactionSchema.virtual('user', {
     ref: 'User',
     localField: 'userId',
     foreignField: '_id',
     justOne: true
 });
 
-ThoughtSchema.virtual('username', {
+ThoughtSchema.virtual('user', {
     ref: 'User',
     localField: 'userId',
     foreignField: '_id',
