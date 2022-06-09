@@ -29,3 +29,6 @@ Design a frontend to display the JSON data the robust API outputs and make your 
 
 ## Demonstration
 Here is a [Video Walkthrough](https://drive.google.com/file/d/1BZCONF5vmQHLmukJwFCJGgCrEsv_BeIz/view)
+
+## Screenshot
+![Screenshot of an Insomnia interaction with the application.](./screenshot.png)
