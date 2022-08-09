@@ -3,7 +3,7 @@
 ## Description
 A NoSQL backend for a social networking application
 
-  ## Table of Contents
+## Table of Contents
 * [Features](#features)
 * [Technologies](#technologies)
 * [Installation](#installation)
